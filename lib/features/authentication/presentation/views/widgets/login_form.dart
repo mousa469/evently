@@ -8,7 +8,7 @@ import 'package:evently/features/authentication/data/cubit/cubit/authentication_
 import 'package:evently/features/authentication/presentation/views/register.dart';
 import 'package:evently/features/authentication/presentation/views/reset_password_view.dart';
 import 'package:evently/features/authentication/presentation/views/widgets/custom_text_button.dart';
-import 'package:evently/features/home/presentation/views/home_view.dart';
+import 'package:evently/features/layout/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

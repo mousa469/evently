@@ -2,7 +2,8 @@ import 'package:evently/core/helper/easy_loading.dart';
 import 'package:evently/features/authentication/presentation/views/login_view.dart';
 import 'package:evently/features/authentication/presentation/views/register.dart';
 import 'package:evently/features/authentication/presentation/views/reset_password_view.dart';
-import 'package:evently/features/home/presentation/views/home_view.dart';
+import 'package:evently/features/layout/create_event/presentation/views/create_event_view.dart';
+import 'package:evently/features/layout/home/presentation/views/home_view.dart';
 import 'package:evently/features/splash/presentation/splash_view.dart';
 import 'package:evently/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +39,7 @@ class Evently extends StatelessWidget {
           RegisterView.id: (context) => RegisterView(),
           HomeView.id: (context) => HomeView(),
           ResetPasswordView.id: (context) => ResetPasswordView(),
+          CreateEventView.id: (context) => CreateEventView(),
         },
         theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
