@@ -8,4 +8,5 @@ class AppStyles {
   static const TextStyle textStyle14 = TextStyle(fontSize: 14,);  
   static const TextStyle textStyle24W700 = TextStyle(fontSize: 24, fontWeight: FontWeight.w700);  
   static const TextStyle textStyle22W400 = TextStyle(fontSize: 22, fontWeight: FontWeight.w400);  
+  static const TextStyle textStyle22Medium = TextStyle(fontSize: 22, fontWeight: FontWeight.w500);  
 }

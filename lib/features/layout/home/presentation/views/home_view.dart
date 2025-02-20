@@ -1,74 +1,116 @@
-import 'package:evently/core/extensions/routing_extension.dart';
-import 'package:evently/core/theme/app_colors.dart';
-import 'package:evently/features/layout/create_event/presentation/views/create_event_view.dart';
-import 'package:evently/features/layout/home/presentation/views/widgets/home_view_body.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently/core/constants/constants.dart';
+import 'package:evently/core/services/shared_prefs.dart';
+import 'package:evently/features/layout/create_event/presentation/view_models/event_model.dart';
+import 'package:evently/features/layout/home/presentation/view_models/category_model.dart';
+import 'package:evently/features/layout/home/presentation/views/widgets/home_events_list_view.dart';
+import 'package:evently/features/layout/home/presentation/views/widgets/home_view_custom_app_bar.dart';
+import 'package:evently/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
-  static const String id = "/homeView";
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-  int selectedIndex = 0;
+  final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
+      .collection(SharedPrefs.getString(key: Constants.userID))
+      .snapshots();
+
+  List<EventModel> eventsList = [];
+  List<EventModel> filteredEventsList = [];
+  int currentIndex = 0;
+
+  void onIndexChanged(int index) {
+    setState(() {
+      currentIndex = index;
+      _filterEventsByCategory(index);
+    });
+  }
+
+  void _filterEventsByCategory(int categoryIndex) {
+    setState(() {
+      if (categoryIndex == 0) {
+        filteredEventsList = List.from(eventsList);
+      } else {
+        String selectedCategory =
+            CategoryModel.getEventCategoryList(context)[categoryIndex].itemName;
+        filteredEventsList = eventsList.where((event) {
+          return event.eventCategory == selectedCategory;
+        }).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.pushNamed(CreateEventView.id);
-        },
-        shape: CircleBorder(side: BorderSide(color: AppColors.white, width: 5)),
-        backgroundColor: AppColors.kPrimaryColor,
-        elevation: 0,
-        child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) {
-            setState(() {
-              selectedIndex = value;
-            });
-          },
-          currentIndex: selectedIndex,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.kPrimaryColor,
-          selectedItemColor: AppColors.white,
-          unselectedItemColor: AppColors.white,
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          selectedIconTheme: IconThemeData(color: AppColors.white),
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-              label: "Home",
+    return StreamBuilder(
+      stream: usersStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text("An unexpected error occurred"),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+          return Column(
+            children: [
+              HomeViewCustomAppBar(
+                currentIndex: currentIndex,
+                onIndexChanged: onIndexChanged,
+              ),
+              16.verticalSpace,
+              Center(child: Text(S.of(context).noEventsCreatedYet)),
+            ],
+          );
+        }
+
+        // Populate events list
+        eventsList = snapshot.data!.docs
+            .map((event) =>
+                EventModel.fromFirestore(event.data() as Map<String, dynamic>))
+            .toList();
+
+        // filteredEventsList = List.from(eventsList);
+
+        // If there are no events after filtering
+        if (filteredEventsList.isEmpty) {
+          return Column(
+            children: [
+              HomeViewCustomAppBar(
+                currentIndex: currentIndex,
+                onIndexChanged: onIndexChanged,
+              ),
+              16.verticalSpace,
+              Center(child: Text(S.of(context).noEventsCreatedYet)),
+            ],
+          );
+        }
+
+        return Column(
+          children: [
+            HomeViewCustomAppBar(
+              currentIndex: currentIndex,
+              onIndexChanged: onIndexChanged,
             ),
-            BottomNavigationBarItem(
-                icon: Icon(selectedIndex == 1
-                    ? Icons.location_on
-                    : Icons.location_on_outlined),
-                label: "Map"),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.abc,
-                ),
-                label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(selectedIndex == 3
-                    ? Icons.favorite
-                    : Icons.favorite_border),
-                label: "Love"),
-            BottomNavigationBarItem(
-                icon: Icon(selectedIndex == 4
-                    ? Icons.person
-                    : Icons.person_outline_sharp),
-                label: "Profile"),
-          ]),
-      body: SafeArea(child: const HomeViewBody()),
+            16.verticalSpace,
+            HomeEventsListView(
+              eventList: currentIndex == 0 ? eventsList : filteredEventsList,
+            ),
+          ],
+        );
+      },
     );
   }
 }

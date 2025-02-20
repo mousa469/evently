@@ -1,45 +1,34 @@
+import 'package:evently/core/assets/app_assets.dart';
+import 'package:evently/core/constants/constants.dart';
+import 'package:evently/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class CategoryModel {
   final String itemName;
   final IconData itemIcon;
-  final int index;
+  final String? img;
 
   CategoryModel({
+    this.img,
     required this.itemName,
     required this.itemIcon,
-    required this.index,
   });
 
-  static List<CategoryModel> categoryList = [
-    CategoryModel(index:0 , itemName: "All", itemIcon: Icons.explore_outlined),
+  static List<CategoryModel> getEventCategoryList  (BuildContext context){
+    return [
+    CategoryModel(itemName: S.of(context).All, itemIcon: Icons.explore_outlined ,  ),
     CategoryModel(
-        index: 1, itemName: "Sport", itemIcon: Icons.directions_bike_outlined),
+        itemName: S.of(context).sport, itemIcon: Icons.directions_bike_outlined , img: AppAssets.sportCategory),
+    CategoryModel(itemName: S.of(context).Birthday, itemIcon: Icons.cake_outlined , img: AppAssets.birtdayCategory),
     CategoryModel(
-        index: 2, itemName: "Birthday", itemIcon: Icons.cake_outlined),
+        itemName: S.of(context).BookClub, itemIcon: Icons.menu_book_outlined , img: AppAssets.bookclubCategory),
+    CategoryModel(itemName: S.of(context).Meeting, itemIcon: Icons.group , img: AppAssets.meetingCategory),
+    CategoryModel(itemName: S.of(context).Gaming, itemIcon: Icons.sports_esports , img: AppAssets.gamingCategory),
     CategoryModel(
-        index: 3, itemName: "Book Club", itemIcon: Icons.menu_book_outlined),
-    CategoryModel(index: 4, itemName: "Meeting", itemIcon: Icons.group),
-    CategoryModel(index: 5, itemName: "Gaming", itemIcon: Icons.sports_esports),
+        itemName: S.of(context).WorkShop, itemIcon: Icons.work_off_outlined , img: AppAssets.workshopCategory),
     CategoryModel(
-        index: 6, itemName: "Work Shop", itemIcon: Icons.work_off_outlined),
-    CategoryModel(
-        index: 7, itemName: "Holiday", itemIcon: Icons.celebration_outlined),
-    CategoryModel(index: 8, itemName: "eating", itemIcon: Icons.dining),
+        itemName: S.of(context).Holiday, itemIcon: Icons.celebration_outlined , img: AppAssets.holidayCategory),
+    CategoryModel(itemName: S.of(context).Eating, itemIcon: Icons.dining , img: AppAssets.eatingCategory),
   ];
-  static List<CategoryModel> eventCategoryList = [
-    CategoryModel(
-        index: 0, itemName: "Sport", itemIcon: Icons.directions_bike_outlined),
-    CategoryModel(
-        index: 1, itemName: "Birthday", itemIcon: Icons.cake_outlined),
-    CategoryModel(
-        index: 2, itemName: "Book Club", itemIcon: Icons.menu_book_outlined),
-    CategoryModel(index: 3, itemName: "Meeting", itemIcon: Icons.group),
-    CategoryModel(index: 4, itemName: "Gaming", itemIcon: Icons.sports_esports),
-    CategoryModel(
-        index: 5, itemName: "Work Shop", itemIcon: Icons.work_off_outlined),
-    CategoryModel(
-        index: 6, itemName: "Holiday", itemIcon: Icons.celebration_outlined),
-    CategoryModel(index: 7, itemName: "eating", itemIcon: Icons.dining),
-  ];
+  }  
 }

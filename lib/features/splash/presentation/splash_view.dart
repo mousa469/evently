@@ -1,7 +1,10 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:evently/core/constants/constants.dart';
 import 'package:evently/core/extensions/routing_extension.dart';
+import 'package:evently/core/services/shared_prefs.dart';
 import 'package:evently/core/widgets/evently_logo.dart';
-import 'package:evently/features/authentication/presentation/views/login_view.dart';
+import 'package:evently/features/layout/layout_view.dart';
+import 'package:evently/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
@@ -15,10 +18,14 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     Future.delayed(Duration(seconds: 2), () {
-      context.pushNamedAndRemoveUntil(LoginView.id);
+      if (SharedPrefs.getBool(key: Constants.isLoginBefore) ?? false) {
+        context.pushReplacement(LayoutView.id);
+      } else {
+        context.pushReplacement(OnBoardingView.id);
+      }
     });
   }
 
@@ -28,12 +35,7 @@ class _SplashViewState extends State<SplashView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ZoomIn(
-            child: EventlyLogo()
-          )
-
-        ],
+        children: [ZoomIn(child: EventlyLogo())],
       ),
     );
   }

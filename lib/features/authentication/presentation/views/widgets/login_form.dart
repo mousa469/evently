@@ -1,5 +1,7 @@
+import 'package:evently/core/constants/constants.dart';
 import 'package:evently/core/extensions/routing_extension.dart';
 import 'package:evently/core/helper/easy_loading.dart';
+import 'package:evently/core/services/shared_prefs.dart';
 import 'package:evently/core/theme/app_colors.dart';
 import 'package:evently/core/theme/app_styles.dart';
 import 'package:evently/core/widgets/custom_button.dart';
@@ -8,7 +10,8 @@ import 'package:evently/features/authentication/data/cubit/cubit/authentication_
 import 'package:evently/features/authentication/presentation/views/register.dart';
 import 'package:evently/features/authentication/presentation/views/reset_password_view.dart';
 import 'package:evently/features/authentication/presentation/views/widgets/custom_text_button.dart';
-import 'package:evently/features/layout/home/presentation/views/home_view.dart';
+import 'package:evently/features/layout/layout_view.dart';
+import 'package:evently/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,6 +35,7 @@ class _LoginFormState extends State<LoginForm> {
     passwordController.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationCubit, AuthenticationState>(
@@ -39,8 +43,8 @@ class _LoginFormState extends State<LoginForm> {
         if (state is AuthenticationLoading) {
           CustomEasyLoading.showLoading();
         } else if (state is AuthenticationSuccess) {
-          CustomEasyLoading.showSuccess("sign in successfully");
-          context.pushNamedAndRemoveUntil(HomeView.id);
+          CustomEasyLoading.showSuccess(S.of(context).signInSuccessfully);
+          context.pushNamedAndRemoveUntil(LayoutView.id);
         } else if (state is AuthenticationFailure) {
           CustomEasyLoading.hideLoading();
           CustomEasyLoading.showError(state.failureMessage);
@@ -54,7 +58,7 @@ class _LoginFormState extends State<LoginForm> {
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -63,14 +67,14 @@ class _LoginFormState extends State<LoginForm> {
                 Icons.email,
                 color: AppColors.gray,
               ),
-              hint: "Email",
+              hint: S.of(context).email,
               hintColor: AppColors.gray,
             ),
             20.verticalSpace,
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return  S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -79,14 +83,14 @@ class _LoginFormState extends State<LoginForm> {
                 Icons.lock,
                 color: AppColors.gray,
               ),
-              hint: "Password",
+              hint:  S.of(context).Password,
               hintColor: AppColors.gray,
               isPassword: true,
             ),
             Align(
               alignment: Alignment.centerRight,
               child: CustomTextButton(
-                text: "Forget Password?",
+                text: S.of(context).ForgetPasswordQuestion,
                 onPress: () {
                   context.pushNamed(ResetPasswordView.id);
                 },
@@ -94,7 +98,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             16.verticalSpace,
             CustomButton(
-              text: "Login",
+              text: S.of(context).Login,
               onPress: () {
                 if (formKey.currentState!.validate()) {
                   context
@@ -103,6 +107,8 @@ class _LoginFormState extends State<LoginForm> {
                         emailController.text, // Pass the email
                         passwordController.text, // Pass the password
                       );
+                  SharedPrefs.setBool(
+                      key: Constants.isLoginBefore, value: true);
                 }
               },
             ),
@@ -111,14 +117,14 @@ class _LoginFormState extends State<LoginForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Don’t Have Account ? ",
+                  S.of(context).DontHaveAccountQuestion,
                   style: AppStyles.textStyleMeduim16.copyWith(
-                    color: AppColors.black,
+                    // color: AppColors.black,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 CustomTextButton(
-                  text: "Create Account ",
+                  text: S.of(context).CreateAccount,
                   onPress: () {
                     context.pushNamed(RegisterView.id);
                   },
@@ -137,7 +143,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 Text(
-                  "or",
+                  S.of(context).Or,
                   style: AppStyles.textStyleMeduim16
                       .copyWith(color: AppColors.kPrimaryColor),
                 ),
@@ -162,23 +168,28 @@ class _LoginFormState extends State<LoginForm> {
               ),
               onPressed: () {},
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/google(1).png",
-                      width: 30.w,
-                      height: 30.h,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      "Login With Google",
-                      style: AppStyles.textStyleMedium20
-                          .copyWith(color: AppColors.kPrimaryColor),
-                    ),
-                    10.verticalSpace,
-                  ],
+                padding: const EdgeInsets.all(5.0),
+                child: Padding(
+                  padding: EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/google(1).png",
+                        width: 23.w,
+                        height: 30.h,
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        maxLines: 1 ,
+                        overflow: TextOverflow.ellipsis,
+                        S.of(context).LoginWithGoogle,
+                        style: AppStyles.textStyleMedium20
+                            .copyWith(color: AppColors.kPrimaryColor),
+                      ),
+                      10.verticalSpace,
+                    ],
+                  ),
                 ),
               ),
             ),

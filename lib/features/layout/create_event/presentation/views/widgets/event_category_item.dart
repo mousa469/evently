@@ -5,10 +5,10 @@ import 'package:evently/features/layout/home/presentation/view_models/category_m
 import 'package:flutter/material.dart';
 
 class EventCategoryItem extends StatefulWidget {
-  const EventCategoryItem({super.key, required this.categoryModel, required this.currentIndex ,});
+  const EventCategoryItem({super.key, required this.categoryModel, required this.isSelected ,});
 
   final CategoryModel categoryModel ;
-  final int  currentIndex ;
+  final bool isSelected;
 
   @override
   State<EventCategoryItem> createState() => _CategoryItemState();
@@ -20,7 +20,7 @@ class _CategoryItemState extends State<EventCategoryItem> {
     return IntrinsicWidth(
       child: Container(
         decoration: BoxDecoration(
-            color: widget.currentIndex == widget.categoryModel.index ? AppColors.kPrimaryColor : Colors.transparent,
+            color: widget.isSelected ? AppColors.kPrimaryColor : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.kPrimaryColor)),
         child: Padding(
@@ -29,13 +29,13 @@ class _CategoryItemState extends State<EventCategoryItem> {
             children: [
               Icon(
                 widget.categoryModel.itemIcon,
-                color: widget.currentIndex == widget.categoryModel.index ?  AppColors.white : AppColors.kPrimaryColor,
+                color: widget.isSelected?  AppColors.white : AppColors.kPrimaryColor,
               ),
               5.horizontalSpace(),
               Text(
                 widget.categoryModel.itemName,
                 style: AppStyles.textStyleMeduim16
-                    .copyWith(color:widget.currentIndex == widget.categoryModel.index ? AppColors.white : AppColors.kPrimaryColor),
+                    .copyWith(color:widget.isSelected? AppColors.white : AppColors.kPrimaryColor),
               ),
             ],
           ),

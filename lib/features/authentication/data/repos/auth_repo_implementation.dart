@@ -1,5 +1,6 @@
 import 'package:either_dart/either.dart';
-import 'package:evently/core/services/local%20storage/local_storage_services.dart';
+import 'package:evently/core/constants/constants.dart';
+import 'package:evently/core/services/shared_prefs.dart';
 import 'package:evently/features/authentication/data/repos/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,14 +27,15 @@ class AuthRepoImplementation extends AuthRepo {
 
   @override
   Future<Either<String, UserCredential>> createUserWithEmailAndPassword(
-      String email, String password , String name) async {
+      String email, String password, String name) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      LocalStorageServices.storeUsersInfo(id: credential.user!.uid ,name:name );
+      SharedPrefs.storeUserInfo(
+          email: email, userID: credential.user!.uid, name: name);
       return Right(credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

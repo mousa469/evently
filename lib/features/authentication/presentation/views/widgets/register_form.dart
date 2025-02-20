@@ -5,6 +5,7 @@ import 'package:evently/core/theme/app_styles.dart';
 import 'package:evently/core/widgets/custom_button.dart';
 import 'package:evently/core/widgets/custom_text_form_field.dart';
 import 'package:evently/features/authentication/data/cubit/cubit/authentication_cubit.dart';
+import 'package:evently/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
         } else if (state is AuthenticationLoading) {
           CustomEasyLoading.showLoading();
         } else if (state is AuthenticationSuccess) {
-          CustomEasyLoading.showSuccess("sign in successfully");
+          CustomEasyLoading.showSuccess(S.of(context).emailcreatedsuccessfully);
           CustomEasyLoading.hideLoading();
           context.popUp();
         }
@@ -55,7 +56,7 @@ class _RegisterFormState extends State<RegisterForm> {
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -64,14 +65,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 Icons.person,
                 color: AppColors.gray,
               ),
-              hint: "Name",
+              hint: S.of(context).Name,
               hintColor: AppColors.gray,
             ),
             20.verticalSpace,
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -80,14 +81,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 Icons.email,
                 color: AppColors.gray,
               ),
-              hint: "Email",
+              hint: S.of(context).email,
               hintColor: AppColors.gray,
             ),
             20.verticalSpace,
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -96,7 +97,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 Icons.lock,
                 color: AppColors.gray,
               ),
-              hint: "Password",
+              hint: S.of(context).Password,
               hintColor: AppColors.gray,
               isPassword: true,
             ),
@@ -105,7 +106,7 @@ class _RegisterFormState extends State<RegisterForm> {
             CustomTextField(
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return "field is required";
+                  return S.of(context).fieldIsRequired;
                 }
                 return null;
               },
@@ -114,14 +115,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 Icons.lock,
                 color: AppColors.gray,
               ),
-              hint: "Re Password",
+              hint: S.of(context).rePassword,
               hintColor: AppColors.gray,
               isPassword: true,
             ),
             // 5.verticalSpace(),
             16.verticalSpace,
             CustomButton(
-              text: "Create Account",
+              text: S.of(context).CreateAccount,
               onPress: () {
                 if (formKey.currentState!.validate()) {
                   if (passwordController.text == rePasswordController.text) {
@@ -131,26 +132,27 @@ class _RegisterFormState extends State<RegisterForm> {
                             passwordController.text, nameController.text);
                   } else {
                     CustomEasyLoading.showError(
-                        "Confirmation password not correct");
+                        S.of(context).Thepasswordsdonotmatch);
                   }
                 }
               },
             ),
+
             20.verticalSpace,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Already Have Account ? ",
-                  style: AppStyles.textStyleMeduim16.copyWith(
-                      color: AppColors.black, fontWeight: FontWeight.w600),
+                  S.of(context).AlreadyHaveAccountQuestion,
+                  style: AppStyles.textStyleMeduim16
+                      .copyWith(fontWeight: FontWeight.w600),
                 ),
                 InkWell(
                   onTap: () {
                     context.popUp();
                   },
                   child: Text(
-                    "Login",
+                    S.of(context).Login,
                     style: AppStyles.textStyleBold16.copyWith(
                         decoration: TextDecoration.underline,
                         decorationColor: AppColors.kPrimaryColor,
