@@ -4,7 +4,7 @@ import 'package:evently/core/helper/localization_provider.dart';
 import 'package:evently/core/helper/theme_provider.dart';
 import 'package:evently/core/routes/app_routes.dart';
 import 'package:evently/core/services/shared_prefs.dart';
-import 'package:evently/features/on_boarding/presentation/views/on_boarding_view.dart';
+import 'package:evently/features/layout/layout_view.dart';
 import 'package:evently/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class Evently extends StatelessWidget {
                 ? const Locale("en")
                 : const Locale("ar"),
             onGenerateRoute: AppRoutes.onGenerateRoute,
-            initialRoute: OnBoardingView.id,
+            initialRoute: LayoutView.id,
             builder: EasyLoading.init(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
@@ -62,7 +62,8 @@ class Evently extends StatelessWidget {
               useMaterial3: true,
               textTheme: GoogleFonts.interTextTheme(
                 ThemeData(
-                        brightness: Provider.of<ThemeProvider>(context).isLight? Brightness.light
+                        brightness: Provider.of<ThemeProvider>(context).isLight
+                            ? Brightness.light
                             : Brightness.dark)
                     .textTheme,
               ),

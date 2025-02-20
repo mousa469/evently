@@ -16,6 +16,7 @@ class LoveView extends StatefulWidget {
 class _LoveViewState extends State<LoveView> {
   final userStream = FirebaseFirestore.instance
       .collection(SharedPrefs.getString(key: Constants.userID))
+      .where('isFavorite', isEqualTo: true)
       .snapshots();
 
   List<EventModel> favoriteEventsList = [];
@@ -40,6 +41,7 @@ class _LoveViewState extends State<LoveView> {
           if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
             return Center(child: Text(S.of(context).NoFavoriteEventsYet));
           }
+          favoriteEventsList.clear();
 
           for (var event in snapshot.data!.docs) {
             favoriteEventsList.add(EventModel.fromFirestore(event.data()));

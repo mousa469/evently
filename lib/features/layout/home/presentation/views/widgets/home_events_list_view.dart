@@ -3,7 +3,10 @@ import 'package:evently/features/layout/home/presentation/views/widgets/event_ca
 import 'package:flutter/material.dart';
 
 class HomeEventsListView extends StatefulWidget {
-  const HomeEventsListView({super.key, required this.eventList});
+  const HomeEventsListView({
+    super.key,
+    required this.eventList,
+  });
   final List<EventModel> eventList;
 
   @override

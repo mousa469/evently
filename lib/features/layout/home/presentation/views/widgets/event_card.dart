@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EventCard extends StatefulWidget {
-  const EventCard({super.key, required this.eventModel});
+  const EventCard({
+    super.key,
+    required this.eventModel,
+  });
   final EventModel eventModel;
 
   @override
@@ -19,11 +22,12 @@ class _EventCardState extends State<EventCard> {
   @override
   void initState() {
     super.initState();
-    fetchCardImg();
   }
 
   @override
   Widget build(BuildContext context) {
+    fetchCardImg();
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       child: Container(
@@ -43,8 +47,8 @@ class _EventCardState extends State<EventCard> {
             Align(
                 alignment: Alignment.topLeft,
                 child: EventCardDateTime(
-                  day: widget.eventModel.eventDate,
-                  month: widget.eventModel.eventTime,
+                  day: widget.eventModel.eventDate.substring(0, 2),
+                  month: widget.eventModel.eventDate.substring(3, 6),
                 )),
             EventCardTitle(
               eventModel: widget.eventModel,
@@ -56,11 +60,11 @@ class _EventCardState extends State<EventCard> {
   }
 
   fetchCardImg() {
-    for (int i = 0; i < CategoryModel.getEventCategoryList(context).length; i++) {
-      if (CategoryModel.getEventCategoryList(context)[i].itemName ==
+    for (int i = 0; i < CategoryModel.getEventCategoryList.length; i++) {
+      if (CategoryModel.getEventCategoryList[i].itemName ==
           widget.eventModel.eventCategory) {
-        if (CategoryModel.getEventCategoryList(context)[i].img != null) {
-          img = CategoryModel.getEventCategoryList(context)[i].img!;
+        if (CategoryModel.getEventCategoryList[i].img != null) {
+          img = CategoryModel.getEventCategoryList[i].img!;
         } else {
           img = "assets/images/no_image.png";
         }

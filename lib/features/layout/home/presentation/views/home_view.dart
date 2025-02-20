@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
         filteredEventsList = List.from(eventsList);
       } else {
         String selectedCategory =
-            CategoryModel.getEventCategoryList(context)[categoryIndex].itemName;
+            CategoryModel.getEventCategoryList[categoryIndex].itemName;
         filteredEventsList = eventsList.where((event) {
           return event.eventCategory == selectedCategory;
         }).toList();
@@ -82,7 +82,10 @@ class _HomeViewState extends State<HomeView> {
                 EventModel.fromFirestore(event.data() as Map<String, dynamic>))
             .toList();
 
-        // filteredEventsList = List.from(eventsList);
+        // filteredEventsList = List.from(eventsList);\
+        //   if (filteredEventsList.isEmpty) {
+        //   filteredEventsList = List.from(eventsList);
+        // }
 
         // If there are no events after filtering
         if (filteredEventsList.isEmpty) {

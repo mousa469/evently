@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LocalizationProvider extends ChangeNotifier {
-  bool isEnglish = false;
+  bool isEnglish = true;
 
 void   changeLanguage() {
     if (isEnglish) {

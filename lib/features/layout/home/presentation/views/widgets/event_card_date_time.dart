@@ -15,7 +15,7 @@ class EventCardDateTime extends StatelessWidget {
       child: IntrinsicWidth(
         child: Container(
           width: 60.w,
-          height: 80.h,
+          height: 70.h,
           decoration: BoxDecoration(
               color: AppColors.white, borderRadius: BorderRadius.circular(12)),
           child: Column(

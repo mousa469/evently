@@ -27,13 +27,12 @@ class _CategoryListViewState extends State<EventCategoryListView> {
                   widget.onIndexChanged(index);
                 },
                 child: EventCategoryItem(
-                  categoryModel: CategoryModel.getEventCategoryList(context)[index+1],
+                  categoryModel: CategoryModel.getEventCategoryList[index + 1],
                   isSelected: widget.currentIndex == index,
                 ));
           },
           separatorBuilder: (context, index) => 16.horizontalSpace,
-          itemCount: CategoryModel.getEventCategoryList(context).length -1
-          ),
+          itemCount: CategoryModel.getEventCategoryList.length - 1),
     );
   }
 }

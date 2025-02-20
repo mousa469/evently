@@ -172,8 +172,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
                       return;
                     }
 
-                    eventCategory = CategoryModel.getEventCategoryList(
-                            context)[widget.currentIndex + 1]
+                    eventCategory = CategoryModel.getEventCategoryList[widget.currentIndex + 1]
                         .itemName;
                     EventModel event = EventModel(
                         eventID: FirebaseFirestore.instance
